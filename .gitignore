@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+.venv/
+venv/
+
+# Streamlit
+.streamlit/
+
+# Database
+*.db
+temp.db
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# Cache
+.cache/
+
+# FAISS Indexes
+*.faiss
+*.pkl
+
+# Testing
+.pytest_cache/
