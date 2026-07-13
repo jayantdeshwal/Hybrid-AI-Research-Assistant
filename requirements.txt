@@ -18,3 +18,5 @@ duckduckgo-search
 wikipedia
 
 sqlalchemy
+
+torch
