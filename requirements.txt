@@ -6,6 +6,7 @@ matplotlib
 langchain
 langchain-community
 langchain-groq
+langchain-huggingface
 
 python-dotenv
 pydantic
