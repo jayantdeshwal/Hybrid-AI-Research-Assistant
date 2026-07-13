@@ -2,7 +2,7 @@ streamlit
 pandas
 numpy
 matplotlib
-ddgs
+
 
 langchain
 langchain-community
@@ -17,6 +17,7 @@ faiss-cpu
 pypdf
 
 duckduckgo-search
+ddgs
 wikipedia
 
 sqlalchemy
