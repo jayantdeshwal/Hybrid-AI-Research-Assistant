@@ -1,3 +1,4 @@
+from urllib import response
 import uuid
 import streamlit as st
 
@@ -105,10 +106,14 @@ def render_data_response(response):
 
     st.markdown("### 📊 Analysis Result")
 
+    rows = len(response["data"])
+
+    table_height = min(250, 40 + rows * 35)
+
     st.dataframe(
         response["data"],
-        width="stretch",
-        height=420
+        use_container_width=True,
+        height=table_height
     )
 
     if hasattr(response["data"], "to_csv"):
@@ -137,9 +142,15 @@ def render_data_response(response):
 
         st.markdown("### 📈 Visualization")
 
+        fig = response["chart"]
+
+        fig.set_size_inches(9, 4.8)
+
+        fig.tight_layout()
+
         st.pyplot(
-            response["chart"],
-            width="stretch"
+            fig,
+            use_container_width=True
         )
 
     if response.get("explanation"):

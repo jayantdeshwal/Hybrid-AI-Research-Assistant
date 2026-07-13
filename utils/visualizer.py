@@ -146,7 +146,7 @@ def create_chart(
 
         plt.xticks(rotation=45)
         plt.tight_layout()
-
+        fig.set_facecolor("white")
         return fig
 
     # =====================
