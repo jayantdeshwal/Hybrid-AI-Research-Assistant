@@ -11,11 +11,7 @@ from ui.chat import (
     process_user_question,
     save_agent_response
 )
-import langchain_google_genai
-import google.genai
 
-st.write("LangChain Google GenAI:", langchain_google_genai.__version__)
-st.write("Google GenAI:", google.genai.__version__)
 
 
 # ==========================================
