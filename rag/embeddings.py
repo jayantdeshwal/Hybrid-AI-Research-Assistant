@@ -8,7 +8,8 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 # Configure Gemini API Key
 # ==========================================
 
-os.environ["GOOGLE_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+if "GOOGLE_API_KEY" not in os.environ:
+    os.environ["GOOGLE_API_KEY"] = st.secrets["GEMINI_API_KEY"]
 
 
 # ==========================================
@@ -23,7 +24,7 @@ def get_embedding_model():
     print("=" * 60)
 
     embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004"
+        model="gemini-embedding-001"
     )
 
     print("=" * 60)
