@@ -190,7 +190,7 @@ Examples:
 Upload PDF → PDF → Hybrid Questions
 
 <p align="center">
-<img src="assets/demos/complete_workflow.gif" width="900">
+<img src="assets/demos/workflow.gif" width="900">
 </p>
 
 ## Visualization Demo
