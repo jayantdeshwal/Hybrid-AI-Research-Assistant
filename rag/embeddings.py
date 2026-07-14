@@ -1,17 +1,14 @@
 import os
-import time
 
 import streamlit as st
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 
 # ==========================================
-# Configure Hugging Face Authentication
+# Configure Gemini API Key
 # ==========================================
 
-if "HF_TOKEN" in st.secrets:
-    os.environ["HF_TOKEN"] = st.secrets["HF_TOKEN"]
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HF_TOKEN"]
+os.environ["GOOGLE_API_KEY"] = st.secrets["GEMINI_API_KEY"]
 
 
 # ==========================================
@@ -22,16 +19,15 @@ if "HF_TOKEN" in st.secrets:
 def get_embedding_model():
 
     print("=" * 60)
-    print("Loading HuggingFace Embedding Model...")
-    start = time.time()
+    print("Loading Gemini Embedding Model...")
+    print("=" * 60)
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/text-embedding-004"
     )
 
-    end = time.time()
-
-    print(f"Embedding model loaded successfully in {end - start:.2f} seconds")
+    print("=" * 60)
+    print("Gemini Embedding Model Loaded Successfully")
     print("=" * 60)
 
     return embeddings
