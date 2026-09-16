@@ -1,7 +1,9 @@
 streamlit
 pandas
 numpy
-matplotliblangchain
+matplotlib
+
+langchain
 langchain-community
 langchain-groq
 langchain-google-genai
@@ -19,4 +21,3 @@ sqlalchemy
 langgraph
 
 langchain-text-splitters
-
