@@ -552,6 +552,62 @@ def _css(p):
     }}
 
     /* ===========================
+       Native widget chrome
+       (chat input + uploader) -
+       neutralize theme blue/dark
+       backgrounds in BOTH themes
+    =========================== */
+
+    div[data-testid="stChatInput"],
+    div[data-testid="stChatInput"] > div,
+    div[data-testid="stChatInput"] div,
+    section[data-testid="stChatInput"] {{
+        background: var(--hf-input-bg) !important;
+        background-color: var(--hf-input-bg) !important;
+        border-color: var(--hf-border-strong) !important;
+    }}
+
+    div[data-testid="stChatInput"] textarea {{
+        background: transparent !important;
+        color: var(--hf-text) !important;
+    }}
+
+    div[data-testid="stChatInput"] button,
+    div[data-testid="stChatInput"] button svg {{
+        color: var(--hf-text) !important;
+        fill: var(--hf-text) !important;
+    }}
+
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] > div,
+    div[data-testid="stFileUploader"] section,
+    div[data-testid="stFileUploaderDropzone"],
+    div[data-testid="stFileUploaderDropzone"] > div,
+    div[data-testid="stFileUploaderDropzone"] section {{
+        background: var(--hf-surface-2) !important;
+        background-color: var(--hf-surface-2) !important;
+        border-color: var(--hf-border-strong) !important;
+        box-shadow: none !important;
+    }}
+
+    div[data-testid="stFileUploaderDropzone"] button,
+    div[data-testid="stFileUploader"] button {{
+        background: var(--hf-surface-solid) !important;
+        background-color: var(--hf-surface-solid) !important;
+        color: var(--hf-text) !important;
+        border: 1px solid var(--hf-border-strong) !important;
+        box-shadow: none !important;
+    }}
+
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span,
+    div[data-testid="stFileUploader"] button *,
+    div[data-testid="stFileUploaderDropzone"] * {{
+        color: var(--hf-text) !important;
+        fill: var(--hf-text) !important;
+    }}
+
+    /* ===========================
        Scrollbar
     =========================== */
 
