@@ -1,26 +1,22 @@
 streamlit
 pandas
 numpy
-matplotlib
-
-
-langchain
+matplotliblangchain
 langchain-community
 langchain-groq
 langchain-google-genai
-google-generativeai
 
 python-dotenv
 pydantic
 
-
 faiss-cpu
 pypdf
 
-duckduckgo-search
 ddgs
-wikipedia
 
 sqlalchemy
 
-torch
+langgraph
+
+langchain-text-splitters
+

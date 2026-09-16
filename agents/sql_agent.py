@@ -20,6 +20,18 @@ def sql_agent(
             source="SQLite Database"
         )
 
+    if df is None:
+
+        return create_response(
+            tool="sql",
+            success=False,
+            answer=(
+                "SQL database is connected but no dataset "
+                "is loaded. Please upload a CSV file first."
+            ),
+            source="SQLite Database"
+        )
+
     columns = df.columns.tolist()
 
     query = generate_sql(

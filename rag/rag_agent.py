@@ -3,6 +3,7 @@ from rag.corrective_rag import corrective_retrieval
 from rag.reranker import (
     rerank_documents
 )
+from rag.answer_validator import validate_answer
 
 
 def answer_question(
@@ -92,6 +93,35 @@ Relevant Evidence:
         .content
     )
 
-    
+    # ------------------------------------
+    # Self-RAG validation (hallucination
+    # guard) - flag ungrounded answers
+    # ------------------------------------
+
+    try:
+
+        validation = validate_answer(
+            question,
+            answer,
+            docs
+        )
+
+        print(
+            "\n========== Answer Validation ==========\n",
+            validation
+        )
+
+        if not validation["answer_supported"]:
+
+            answer = (
+                answer
+                + "\n\n⚠️ *Note: I could not fully verify "
+                "this answer against the retrieved document "
+                "content. Please treat it with caution.*"
+            )
+
+    except Exception as e:
+
+        print("Answer validation failed:", e)
 
     return answer

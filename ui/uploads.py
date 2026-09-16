@@ -7,14 +7,24 @@ from rag.splitter import split_documents
 from rag.vectorstore import create_vectorstore
 
 from sql.loader import create_database
+from ui.motion import animate_upload_zone
 
 
 def render_csv_upload(file):
 
-    df = pd.read_csv(
-        file,
-        encoding="windows-1252"
+    # ----------------------------------------
+    # Skip re-processing on Streamlit reruns
+    # ----------------------------------------
+
+    processed = st.session_state.get(
+        "processed_csv_files",
+        set()
     )
+
+    if file.name in processed:
+        return
+
+    df = load_csv_with_fallback(file)
 
     st.session_state.sql_connection = (
         create_database(df)
@@ -38,46 +48,106 @@ def render_csv_upload(file):
 
     st.session_state.df = df
 
+    processed.add(file.name)
+    st.session_state.processed_csv_files = processed
+
     st.success(
         f"✅ {file.name} uploaded successfully "
         f"({df.shape[0]} rows)"
     )
 
 
+def load_csv_with_fallback(file):
+
+    for encoding in (
+        "utf-8",
+        "windows-1252",
+        "latin-1"
+    ):
+
+        try:
+
+            return pd.read_csv(
+                file,
+                encoding=encoding
+            )
+
+        except UnicodeDecodeError:
+            file.seek(0)
+            continue
+
+    raise ValueError(
+        f"Could not decode {file.name} with any "
+        "supported encoding."
+    )
+
+
 def render_pdf_upload(file):
 
-    if st.session_state.pdf_processed:
+    # ----------------------------------------
+    # Track processed PDFs by name so every
+    # uploaded PDF is indexed exactly once
+    # ----------------------------------------
+
+    processed = st.session_state.get(
+        "processed_pdf_files",
+        set()
+    )
+
+    if file.name in processed:
         return
 
     with st.spinner(
         f"Processing {file.name}..."
     ):
 
-        with open("temp.pdf", "wb") as f:
+        try:
 
-            f.write(file.getbuffer())
+            with open("temp.pdf", "wb") as f:
 
-        documents = load_pdf("temp.pdf")
+                f.write(file.getbuffer())
 
-        chunks = split_documents(documents)
+            documents = load_pdf("temp.pdf")
 
-        st.session_state.vectorstore = (
-            create_vectorstore(chunks)
-        )
+            chunks = split_documents(documents)
 
-        st.session_state.pdf_processed = True
+            existing = st.session_state.get(
+                "vectorstore"
+            )
+
+            if existing is not None:
+
+                # Merge new PDF into the
+                # existing knowledge base
+
+                existing.add_documents(chunks)
+
+                st.session_state.vectorstore = (
+                    existing
+                )
+
+            else:
+
+                st.session_state.vectorstore = (
+                    create_vectorstore(chunks)
+                )
+
+            processed.add(file.name)
+            st.session_state.processed_pdf_files = (
+                processed
+            )
+
+        finally:
+
+            if os.path.exists("temp.pdf"):
+                os.remove("temp.pdf")
 
     st.success(
 
         f"✅ {file.name} uploaded successfully "
-
         f"({len(documents)} pages, "
-
         f"{len(chunks)} chunks)"
-
     )
-
-    os.remove("temp.pdf")
 
 
 def render_upload_section():
@@ -101,15 +171,17 @@ Supported formats:
     label_visibility="collapsed"
 )
 
+    animate_upload_zone()
+
     if not uploaded_files:
         return
 
     for file in uploaded_files:
 
-        if file.name.endswith(".pdf"):
+        if file.name.lower().endswith(".pdf"):
 
             render_pdf_upload(file)
 
-        elif file.name.endswith(".csv"):
+        elif file.name.lower().endswith(".csv"):
 
             render_csv_upload(file)

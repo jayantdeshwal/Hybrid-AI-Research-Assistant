@@ -5,6 +5,8 @@ def initialize_session():
 
     defaults = {
 
+        "theme": "dark",
+
         "messages": [],
         "last_question": None,
         "last_result": None,

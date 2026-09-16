@@ -96,7 +96,7 @@ Examples:
 
 ## LLM
 
-- llama-3.3-70b-versatile
+- openai/gpt-oss-120b (Groq) — configurable via the `GROQ_MODEL` environment variable; if the configured model is ever deprecated, the app auto-selects the best available Groq model instead of crashing
 
 ## AI Framework
 
@@ -221,9 +221,9 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Create a `.streamlit/secrets.toml`
+Create a `.env` file in the project root (or use `.streamlit/secrets.toml` on Streamlit Cloud):
 
-```toml
+```env
 GEMINI_API_KEY="YOUR_API_KEY"
 GROQ_API_KEY="YOUR_API_KEY"
 ```
@@ -233,6 +233,26 @@ Run
 ```bash
 streamlit run app.py
 ```
+
+---
+
+# 🚀 Deployment (Streamlit Community Cloud)
+
+1. Push this repository to GitHub (public repo).
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app** → select this repo, branch `main`, main file `app.py` → **Deploy**.
+3. In the app's **Settings → Secrets**, add:
+
+```toml
+GEMINI_API_KEY="YOUR_API_KEY"
+GROQ_API_KEY="YOUR_API_KEY"
+```
+
+Every `git push` to `main` redeploys the app automatically.
+
+Notes:
+- The LLM is Groq-only (`GROQ_API_KEY`); the best available Groq model is auto-detected at startup — pin one with the `GROQ_MODEL` env var if you like.
+- Gemini embeddings (`GEMINI_API_KEY`) power PDF RAG.
+- Optional: set `GROQ_MODEL` as a secret too if you want to pin a model in the cloud.
 
 ---
 

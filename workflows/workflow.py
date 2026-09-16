@@ -1,9 +1,24 @@
-from agents.query_agent import generate_query
-from agents.visualization_agent import generate_chart
-from utils.explanation import explain_result
-from utils.question_rewriter import rewrite_question
-from utils.executor import execute_query
+from langgraph.graph import (
+    StateGraph,
+    END
+)
 
+from workflows.state import AgentState
+
+from utils.question_rewriter import rewrite_question
+from utils.query_generator import generate_query
+from utils.executor import execute_query
+from utils.explanation import explain_result
+from utils.visualizer import (
+    needs_visualization,
+    detect_chart_type,
+    create_chart
+)
+
+
+# ==========================================
+# Nodes
+# ==========================================
 
 def rewrite_node(state):
 
@@ -30,11 +45,6 @@ def rewrite_node(state):
     return state
 
 
-
-
-from agents.query_agent import generate_query
-
-
 def query_node(state):
 
     query = generate_query(
@@ -47,12 +57,6 @@ def query_node(state):
     return state
 
 
-
-
-
-from utils.executor import execute_query
-
-
 def execute_node(state):
 
     result = execute_query(
@@ -63,31 +67,6 @@ def execute_node(state):
     state["result"] = result
 
     return state
-
-
-
-
-
-from utils.explanation import explain_result
-
-
-def explanation_node(state):
-
-    explanation = explain_result(
-        state["rewritten_question"],
-        state["result"]
-    )
-
-    state["explanation"] = explanation
-
-    return state
-
-
-from utils.visualizer import (
-    needs_visualization,
-    detect_chart_type,
-    create_chart
-)
 
 
 def visualization_node(state):
@@ -109,19 +88,29 @@ def visualization_node(state):
                 result,
                 chart_type
             )
-        except:
+        except Exception:
             chart = None
 
     state["chart"] = chart
 
     return state
 
-from langgraph.graph import (
-    StateGraph,
-    END
-)
 
-from Project1.workflows.state import AgentState
+def explanation_node(state):
+
+    explanation = explain_result(
+        state["rewritten_question"],
+        state["result"]
+    )
+
+    state["explanation"] = explanation
+
+    return state
+
+
+# ==========================================
+# Graph
+# ==========================================
 
 builder = StateGraph(
     AgentState
@@ -182,10 +171,3 @@ builder.add_edge(
 )
 
 graph = builder.compile()
-
-
-
-
-
-
-

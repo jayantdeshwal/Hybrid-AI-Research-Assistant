@@ -15,6 +15,21 @@ def format_response(
         if source not in sources:
             sources.append(source)
 
+    # ----------------------------------------
+    # Carry data artifacts from the
+    # highest-ranked evidence that has them
+    # ----------------------------------------
+
+    best = None
+
+    for item in ranked_evidence:
+
+        response = item["evidence"]["response"]
+
+        if response.get("data") is not None:
+            best = response
+            break
+
     return {
 
         "tool": "chat",
@@ -29,7 +44,9 @@ def format_response(
 
         "metadata": {
             "sources": sources
-        },  
+        },
+
+        "sources": sources,
 
         "confidence": confidence["score"],
 
@@ -41,11 +58,13 @@ def format_response(
             else None
         ),
 
-        "data": None,
+        "data": best.get("data") if best else None,
 
-        "query": None,
+        "query": best.get("query") if best else None,
 
-        "chart": None,
+        "chart": best.get("chart") if best else None,
 
-        "explanation": None
+        "explanation": (
+            best.get("explanation") if best else None
+        )
     }

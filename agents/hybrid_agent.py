@@ -7,6 +7,7 @@ from agents.sql_agent import sql_agent
 from agents.web_agent import web_agent
 from reasoning.answer_composer import compose_answer
 from utils.llm import llm
+from utils.response_schema import create_response
 from reasoning.evidence_evaluator import evaluate_evidence
 from reasoning.reflection import build_reasoning_plan
 from reasoning.confidence_scorer import score_confidence
@@ -111,6 +112,25 @@ def hybrid_agent(
 
             print(f"ERROR while executing {tool}:")
             print(e)
+
+    # ------------------------------------
+    # All tools failed -> graceful error
+    # ------------------------------------
+
+    if len(evidence) == 0:
+
+        return create_response(
+            tool="chat",
+            success=False,
+            answer=(
+                "I couldn't process your question because "
+                "all knowledge sources failed. Please try "
+                "rephrasing, or check your uploads and "
+                "connection, then try again."
+            ),
+            source="Hybrid AI",
+            route=tools
+        )
 
 
     print("\n========== Evaluating Evidence ==========")

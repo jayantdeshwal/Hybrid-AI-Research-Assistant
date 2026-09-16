@@ -1,5 +1,8 @@
 import pandas as pd
+import numpy as np
+from datetime import datetime
 from utils.query_generator import fix_query
+
 
 def execute_query(query,df):
 
@@ -8,8 +11,11 @@ def execute_query(query,df):
         return eval(
             query,
             {
+                "__builtins__": __builtins__,
                 "df": df,
-                "pd": pd
+                "pd": pd,
+                "np": np,
+                "datetime": datetime
             }
         )
 

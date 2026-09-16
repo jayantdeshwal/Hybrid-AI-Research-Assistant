@@ -1,5 +1,6 @@
 import streamlit as st
 from ui.styles import load_css
+from ui.motion import load_motion
 from ui.header import render_header
 from ui.sidebar import render_sidebar
 
@@ -24,6 +25,7 @@ st.set_page_config(
     layout="wide"
 )
 load_css()
+load_motion()
 
 render_header()
 
@@ -61,6 +63,14 @@ render_sidebar()
 # ==========================================
 
 render_chat_history()
+
+# ==========================================
+# Scroll-reveal animations for content
+# ==========================================
+
+from ui.motion import apply_scroll_reveal
+
+apply_scroll_reveal()
 
 # ==========================================
 # Chat Input
