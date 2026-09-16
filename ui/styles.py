@@ -123,10 +123,24 @@ def _css(p):
        Base
     =========================== */
 
-    html, body, [class*="css"] {{
+    html, body, [class*="css"], .stApp,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] span,
+    [data-testid="stMarkdownContainer"] li {{
         font-family: 'Inter', sans-serif;
-        color: var(--hf-text);
         font-feature-settings: "tnum" 1;
+    }}
+
+    /* Global text color - covers old and new
+       Streamlit class systems (1.64+) */
+
+    .stApp,
+    .stApp *:not(svg):not(path):not(a) {{
+        color: var(--hf-text);
+    }}
+
+    code, pre, code * {{
+        color: var(--hf-accent-2);
     }}
 
     .stApp {{
@@ -284,6 +298,7 @@ def _css(p):
        Metrics
     =========================== */
 
+    div[data-testid="stMetric"],
     div[data-testid="metric-container"] {{
         background: var(--hf-surface);
         border: 1px solid var(--hf-border);
@@ -294,6 +309,7 @@ def _css(p):
         transition: transform .25s ease, box-shadow .25s ease;
     }}
 
+    div[data-testid="stMetric"]:hover,
     div[data-testid="metric-container"]:hover {{
         transform: translateY(-3px);
         box-shadow: var(--hf-shadow-hover);
