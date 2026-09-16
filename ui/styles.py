@@ -36,6 +36,7 @@ _PALETTES = {
         "bg-glow-1": "rgba(109,140,255,0.16)",
         "bg-glow-2": "rgba(34,211,238,0.10)",
         "surface": "rgba(17,26,46,0.82)",
+        "chat-bg": "rgba(17,26,46,0.92)",
         "surface-solid": "#111A2E",
         "surface-2": "#16213A",
         "border": "rgba(255,255,255,0.09)",
@@ -56,6 +57,7 @@ _PALETTES = {
         "bg-glow-1": "rgba(37,99,235,0.08)",
         "bg-glow-2": "rgba(8,145,178,0.06)",
         "surface": "rgba(255,255,255,0.88)",
+        "chat-bg": "#FFFFFF",
         "surface-solid": "#FFFFFF",
         "surface-2": "#EEF3FA",
         "border": "#E4E9F2",
@@ -103,6 +105,7 @@ def _css(p):
         --hf-bg-glow-1: {p["bg-glow-1"]};
         --hf-bg-glow-2: {p["bg-glow-2"]};
         --hf-surface: {p["surface"]};
+        --hf-chat-bg: {p["chat-bg"]};
         --hf-surface-solid: {p["surface-solid"]};
         --hf-surface-2: {p["surface-2"]};
         --hf-border: {p["border"]};
@@ -324,7 +327,7 @@ def _css(p):
         padding: 16px 18px;
         margin-bottom: 16px;
         border: 1px solid var(--hf-border);
-        background: var(--hf-surface);
+        background: var(--hf-chat-bg);
         backdrop-filter: blur(12px);
         transition: transform .25s ease, box-shadow .25s ease,
                     border-color .25s ease;
